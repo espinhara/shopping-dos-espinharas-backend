@@ -1,33 +1,25 @@
-const Sale = require('../models/Sale');
-const Product = require('../models/Product');
-const id6 = require('../helpers/id6');
+import { Request, Response } from 'express';
+import Sale from '../models/Sale';
+import Product from '../models/Product';
+import id6 from '../helpers/id6';
 
-/**
- * @param {{
- * body:{
- * products:[{
- * quantity:number;
- * productId:string;
- * productName:string;
- * price:number;
- * }],
- * total:number;
- * pickupName:string;
- * customerName:string;
- * status:string;
- * subtotal:number;
- * installments: number;
- * paymentMethod:string;
- * }}} req - Request by Client
- * @param {Response} res - Response by Server
- */
-exports.create = async (req, res) => {
-  const { products, total, pickupName, customerName, installments, subtotal, status, paymentMethod } = req.body;
+export const create = async (req: Request, res: Response): Promise<void> => {
   try {
+    const { products, total, pickupName, customerName, installments, subtotal, status, paymentMethod } = req.body;
+    if (!products) {
+      res.status(404).json({ message: 'Produto não encontrado' });
+      return;
+    }
     for (const item of products) {
       const product = await Product.findById(item.productId).exec();
-      if (!product) return res.status(404).json({ error: 'Produto não encontrado' });
-      if (product.quantity < item.quantity) return res.status(400).json({ error: 'Quantidade insuficiente em estoque' });
+      if (!product) {
+        res.status(404).json({ error: 'Produto não encontrado' });
+        return;
+      }
+      if (product.quantity < item.quantity) {
+        res.status(400).json({ error: 'Quantidade insuficiente em estoque' });
+        return
+      }
     }
 
     // Criar uma nova venda com status "pending"
@@ -53,24 +45,35 @@ exports.create = async (req, res) => {
   }
 }
 
-exports.approve = async (req, res) => {
+export const approve = async (req: Request, res: Response): Promise<void> => {
   const { id: saleId } = req.params;
 
   try {
     // Encontrar a venda
     const sale = await Sale.findById(saleId).exec();
-    if (!sale) return res.status(404).json({ error: 'Venda não encontrada' });
-    if (sale.status === 'paid') return res.status(400).json({ error: 'Venda já foi paga' });
+    if (!sale) {
+      res.status(404).json({ error: 'Venda não encontrada' });
+      return;
+    }
+    if (sale.status === 'paid') {
+      res.status(400).json({ error: 'Venda já foi paga' });
+      return;
+    }
 
     // Atualizar o estoque do produto
     for (const item of sale.products) {
       const product = await Product.findById(item.productId).exec();
-      if (product.quantity < item.quantity) {
-        return res.status(400).json({ error: 'Estoque insuficiente para completar a venda' });
+      if (!product) {
+        res.status(404).json({ error: 'Produto não encontrado' });
+        return;
       }
+      if (product.quantity < item.quantity) {
+        res.status(400).json({ error: 'Estoque insuficiente para completar a venda' });
+        return;
+      }
+
       product.quantity -= item.quantity;
       await product.save();
-
     }
 
 
@@ -85,7 +88,7 @@ exports.approve = async (req, res) => {
   }
 }
 
-exports.list = async (req, res) => {
+export const list = async (req: Request, res: Response): Promise<void> => {
   const sales = await Sale.find().exec();
-  return res.status(200).json(sales);
+  res.status(200).json(sales);
 }
