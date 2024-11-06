@@ -1,6 +1,6 @@
 import Sale, { ISale } from '../models/Sale'
 import Product from '../models/Product'
-import id6 from '../helpers/id6'
+import id6 from '../helpers/id'
 import { Request, Response } from 'express';
 
 export const create = async (req: Request, res: Response): Promise<void> => {

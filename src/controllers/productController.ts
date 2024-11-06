@@ -1,7 +1,7 @@
 import { Request, Response } from 'express';
 import Product from '../models/Product';
 import cloudinary from '../config/cloudinary';
-import id6 from '../helpers/id6';
+import id6 from '../helpers/id';
 
 // Criar um novo produto
 export const createProduct = async (req: Request, res: Response): Promise<void> => {
