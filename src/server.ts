@@ -4,7 +4,7 @@ import cors from 'cors';
 import dotenv from 'dotenv';
 import productRoutes from './routes/productRoutes';
 import saleRoutes from './routes/saleRoutes';
-import authRoutes from './routes/auth';
+import authRoutes from './routes/authRoutes';
 
 // Inicialização do app
 dotenv.config();
