@@ -1,7 +1,7 @@
-// backend/middleware/multer.ts
-import { Request, } from 'express';
+// src/middleware/multer.ts
 import multer, { FileFilterCallback } from 'multer';
 import path from 'path';
+import { Request } from 'express';
 
 // Configuração do multer para aceitar imagens
 const storage = multer.diskStorage({

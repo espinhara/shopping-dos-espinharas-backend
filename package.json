@@ -6,7 +6,7 @@
     "test": "echo \"Error: no test specified\" && exit 1",
     "build": "tsc",
     "start": "npm run build && node dist/server.js",
-    "dev": "nodemon --watch src --ext ts --exec ts-node src/server.ts"
+    "dev": "nodemon --watch src --ext ts --exec npx ts-node src/server.ts"
   },
   "keywords": [],
   "author": "Gabriel Espinhara da Silva",
@@ -24,9 +24,11 @@
     "multer": "^1.4.5-lts.1"
   },
   "devDependencies": {
+    "@types/bcryptjs": "^2.4.6",
     "@types/cors": "^2.8.17",
     "@types/dotenv": "^8.2.3",
     "@types/express": "^5.0.0",
+    "@types/jsonwebtoken": "^9.0.7",
     "@types/mongoose": "^5.11.97",
     "@types/node": "^22.8.7",
     "nodemon": "^3.1.7",

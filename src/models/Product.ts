@@ -1,9 +1,8 @@
 import mongoose, { Document, Schema, Model } from 'mongoose';
 import SchemaFactory from './Base';
 
-
-interface IProduct extends Document {
-  isActive: boolean;
+export interface IProduct extends Document {
+  isActive: Boolean;
   name: string;
   description: string;
   price: number;

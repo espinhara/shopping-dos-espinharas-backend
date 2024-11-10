@@ -16,7 +16,7 @@ const ProductInSaleSchema: Schema<IProductInSale> = new mongoose.Schema({
   price: { type: Number, required: true },
 });
 
-interface ISale extends Document {
+export interface ISale extends Document {
   date: string;
   products: IProductInSale[];
   total: number;

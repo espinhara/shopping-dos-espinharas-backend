@@ -4,6 +4,8 @@ import cors from 'cors';
 import dotenv from 'dotenv';
 import productRoutes from './routes/productRoutes';
 import saleRoutes from './routes/saleRoutes';
+import authRoutes from './routes/authRoutes';
+import userRoutes from './routes/userRoutes';
 
 // Inicialização do app
 dotenv.config();
@@ -18,11 +20,13 @@ app.use('/uploads', express.static('uploads')); // Pasta para servir imagens
 // Conexão com MongoDB
 mongoose.connect(process.env.MONGO_URI as string)
   .then(() => console.log('Conectado ao MongoDB'))
-  .catch((err) => console.error('Erro ao conectar ao MongoDB:', err));
+  .catch(err => console.error('Erro ao conectar ao MongoDB:', err));
 
 // Rotas
 app.use('/api/products', productRoutes);
 app.use('/api/sales', saleRoutes);
+app.use('/api/auth', authRoutes);
+app.use('/api/users', userRoutes);
 
 // Iniciar servidor
 app.listen(PORT, () => {
