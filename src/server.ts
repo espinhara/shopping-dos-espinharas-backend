@@ -5,6 +5,7 @@ import dotenv from 'dotenv';
 import productRoutes from './routes/productRoutes';
 import saleRoutes from './routes/saleRoutes';
 import authRoutes from './routes/authRoutes';
+import userRoutes from './routes/userRoutes';
 
 // Inicialização do app
 dotenv.config();
@@ -25,6 +26,7 @@ mongoose.connect(process.env.MONGO_URI as string)
 app.use('/api/products', productRoutes);
 app.use('/api/sales', saleRoutes);
 app.use('/api/auth', authRoutes);
+app.use('/api/users', userRoutes);
 
 // Iniciar servidor
 app.listen(PORT, () => {
