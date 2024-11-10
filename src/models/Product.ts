@@ -10,17 +10,15 @@ export interface IProduct extends Document {
   imagesUrls: string[];
 }
 
-
 const ProductSchema: Schema<IProduct> = SchemaFactory({
-  _id: { type: String, required: true },
   isActive: { type: Boolean, default: true, },
   name: { type: String, required: true },
   description: { type: String, required: true },
   price: { type: Number, required: true },
-  quantity: { type: Number, required: true },
+  quantity: { type: Number, default: 0, required: true },
   imageUrls: [{ type: String }] // Alterado para array de URLs
 });
 
-const Product: Model<IProduct> = mongoose.model('Product', ProductSchema);
+const Product: Model<IProduct> = mongoose.model<IProduct>('Product', ProductSchema)
 
 export default Product;

@@ -15,7 +15,7 @@ export interface IUser extends Document {
   complement: number;
   cpf: string;
   phoneNumber: number;
-  userType: 'user' | 'admin';
+  userType: 'client' | 'admin';
 }
 
 const UserSchema: Schema<IUser> = SchemaFactory({
@@ -32,7 +32,7 @@ const UserSchema: Schema<IUser> = SchemaFactory({
   complement: { type: String, default: null },
   cpf: { type: String, default: null },
   phoneNumber: { type: String, default: null },
-  userType: { type: String, default: 'user' }
+  userType: { type: String, default: 'client' },
 });
 
 const User: Model<IUser> = mongoose.model<IUser>('User', UserSchema);
