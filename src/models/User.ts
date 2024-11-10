@@ -21,6 +21,7 @@ export interface IUser extends Document {
 const UserSchema: Schema<IUser> = SchemaFactory({
   name: { type: String, required: true, },
   email: { type: String, required: true, unique: true },
+  isActive: { type: Boolean, required: true, default: true },
   password: { type: String, required: true },
   zip: { type: String, default: null },
   state: { type: String, default: null },
