@@ -19,8 +19,10 @@ const authMiddleware = (requiredUserType: string) => {
         type: string;
       };
       req.user = decoded; // Você pode adicionar um tipo para req.user se desejar
-      if (requiredUserType && req.user?.type !== requiredUserType)
+      if (requiredUserType && req.user?.type !== requiredUserType) {
         res.status(401).json({ message: "Acesso negado. Tente mais tarde." })
+        return;
+      }
       next();
     } catch (error) {
       res.status(401).json({ message: 'Token inválido' });
