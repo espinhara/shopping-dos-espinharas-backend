@@ -87,3 +87,24 @@ export const list = async (req: Request, res: Response): Promise<void> => {
   res.status(200).json(sales);
   return
 }
+
+
+export const total = async (req: Request, res: Response): Promise<void> => {
+  const result = await Sale.aggregate([
+    {
+      $group: {
+        _id: null, // Não agrupa por campo, faz a soma de todas as vendas
+        totalSales: { $sum: '$total' },// Soma do campo total
+        totalQuantityProducts: { $sum: { $sum: '$products.quantity' } } // Soma de todas as quantidades dentro do array products
+      }
+    }
+  ]);
+
+  // Se o resultado não estiver vazio, retornar o total das vendas
+
+  res.status(200).json({
+    totalSales: result[0].totalSales, // O valor da soma
+    totalQuantityProducts: result[0].totalQuantityProducts // O valor da soma
+  });
+  return
+}
