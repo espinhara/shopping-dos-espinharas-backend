@@ -2,10 +2,10 @@ import express from 'express';
 import mongoose from 'mongoose';
 import cors from 'cors';
 import dotenv from 'dotenv';
-import productRoutes from './routes/productRoutes';
-import saleRoutes from './routes/saleRoutes';
-import authRoutes from './routes/authRoutes';
-import userRoutes from './routes/userRoutes';
+import productRoutes from './routes/product.routes';
+import saleRoutes from './routes/sale.routes';
+import authRoutes from './routes/auth.routes';
+import userRoutes from './routes/user.routes';
 
 // Inicialização do app
 dotenv.config();
