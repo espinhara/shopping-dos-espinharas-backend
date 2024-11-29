@@ -42,10 +42,12 @@ export const login = async (req: Request, res: Response): Promise<void | any> =>
       name: user.name,
       email: user.email,
       type: user.userType,
+      expires: Date.now()
     }
     // Gera o token JWT
-    const token = jwt.sign(userData, process.env.JWT_SECRET ?? '', { expiresIn: '4h' });
-    res.status(200).json({ token, user });
+    const token = jwt.sign(userData, process.env.JWT_SECRET ?? '', { expiresIn: '1d' });
+    res.set('Cache-Control', 'no-store');
+    res.status(200).json({ token, user, status: 200, message: "Login bem-sucedido!" });
   } catch (error) {
     res.status(500).json({ message: 'Erro no servidor' });
   }
