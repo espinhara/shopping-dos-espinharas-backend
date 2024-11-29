@@ -28,3 +28,8 @@ export const update = async (req: Request, res: Response): Promise<void> => {
     res.status(400).json({ message: 'Erro ao atulizar usuários', error });
   }
 }
+
+export const countUsers = async (req: Request, res: Response): Promise<void> => {
+  const count = await User.countDocuments({ userType: 'client' }).exec()
+  res.status(200).json(count);
+}
