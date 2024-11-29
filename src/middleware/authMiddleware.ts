@@ -18,7 +18,7 @@ const authMiddleware = (requiredUserType: string) => {
         email: string;
         type: string;
       };
-      req.user = decoded; // Você pode adicionar um tipo para req.user se desejar
+      req.user = decoded;
       if (requiredUserType && req.user?.type !== requiredUserType) {
         res.status(401).json({ message: "Acesso negado. Tente mais tarde." })
         return;
