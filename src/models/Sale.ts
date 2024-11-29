@@ -17,7 +17,7 @@ const ProductInSaleSchema: Schema<IProductInSale> = new mongoose.Schema({
 });
 
 export interface ISale extends Document {
-  date: string;
+  date: Date;
   products: IProductInSale[];
   total: number;
   subtotal: number;
@@ -29,7 +29,7 @@ export interface ISale extends Document {
 }
 
 const SaleSchema: Schema<ISale> = SchemaFactory({
-  date: { type: String, required: true },
+  date: { type: Date, required: true },
   products: { type: [ProductInSaleSchema], required: true },
   total: { type: Number, required: true },
   subtotal: { type: Number, required: true },
