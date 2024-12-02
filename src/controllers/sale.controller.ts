@@ -41,6 +41,56 @@ export const create = async (req: Request, res: Response): Promise<void> => {
   }
 }
 
+// Controller para criar vendas a partir do carrinho
+export const createFromCart = async (req: Request, res: Response): Promise<void> => {
+  const { products, total, customerName, pickupName, installments, subtotal, paymentMethod } = req.body;
+
+  try {
+    // Verifica o estoque de cada produto
+    for (const item of products) {
+      const product = await Product.findById(item.productId).exec();
+      if (!product) {
+        res.status(404).json({ error: `Produto com ID ${item.productId} não encontrado.` });
+        return;
+      }
+      if (product.quantity < item.quantity) {
+        res.status(400).json({ error: `Quantidade insuficiente para o produto ${product.name}. Estoque: ${product.quantity}, solicitado: ${item.quantity}.` });
+        return;
+      }
+    }
+
+    // Cria uma nova venda
+    const sale = new Sale({
+      _id: id6(),
+      date: Date.now(),
+      products,
+      subtotal,
+      total,
+      paymentMethod,
+      installments,
+      customerName,
+      pickupName,
+      status: 'pending',
+    });
+
+    // Salva a venda no banco
+    await sale.save();
+
+    // Atualiza o estoque dos produtos
+    for (const item of products) {
+      await Product.findByIdAndUpdate(item.productId, {
+        $inc: { quantity: -item.quantity },
+      });
+    }
+
+    res.status(201).json({ message: 'Venda criada com sucesso.', sale });
+  } catch (error) {
+    console.error('Erro ao criar venda a partir do carrinho:', error);
+    res.status(500).json({ error: 'Erro ao criar venda a partir do carrinho.' });
+  }
+};
+
+
 export const approve = async (req: Request, res: Response): Promise<void> => {
   const { id: saleId } = req.params;
 
