@@ -69,6 +69,49 @@ export const getProductById = async (req: Request, res: Response): Promise<void>
   }
 };
 
+export const getPaginatedProducts = async (req: Request, res: Response) => {
+  try {
+    // Parâmetros de query para paginação e busca
+    const page = parseInt(req.query.page as string) || 1; // Página atual
+    const limit = parseInt(req.query.limit as string) || 20; // Itens por página
+    const search = (req.query.search as string) || ''; // Texto de busca
+    // const isActive = req.query.isActive === 'true'; // Filtro de ativos
+
+    // Monta o filtro de busca
+    const query: any = {
+      isActive: true,// isActive,
+    };
+
+    // Adiciona busca por nome ou descrição se 'search' estiver presente
+    if (search) {
+      query.$or = [
+        { name: { $regex: search, $options: 'i' } },
+        { description: { $regex: search, $options: 'i' } },
+      ];
+    }
+
+    // Conta o número total de documentos correspondentes ao filtro
+    const total = await Product.countDocuments(query);
+
+    // Busca os produtos paginados
+    const products = await Product.find(query)
+      .skip((page - 1) * limit)
+      .limit(limit);
+
+    // Retorna os resultados paginados e metadados
+    res.status(200).json({
+      currentPage: page,
+      totalPages: Math.ceil(total / limit),
+      totalItems: total,
+      items: products,
+    });
+  } catch (error) {
+    console.error('Error fetching paginated products:', error);
+    res.status(500).json({ error: 'Internal server error' });
+  }
+};
+
+
 // Atualizar um produto, incluindo até 4 imagens
 export const updateProduct = async (req: Request, res: Response): Promise<void> => {
   try {
