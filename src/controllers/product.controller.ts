@@ -48,7 +48,7 @@ export const getProducts = async (req: Request, res: Response): Promise<void> =>
 // Listar todos os produtos
 export const list = async (req: Request, res: Response): Promise<void> => {
   try {
-    const products = await Product.find();
+    const products = await Product.find().exec();
     res.status(200).json(products);
   } catch (error) {
     res.status(400).json({ message: 'Erro ao obter produtos', error });
@@ -110,7 +110,6 @@ export const getPaginatedProducts = async (req: Request, res: Response) => {
     res.status(500).json({ error: 'Internal server error' });
   }
 };
-
 
 // Atualizar um produto, incluindo até 4 imagens
 export const updateProduct = async (req: Request, res: Response): Promise<void> => {
