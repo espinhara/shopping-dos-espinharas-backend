@@ -6,11 +6,12 @@ import productRoutes from './routes/product.routes';
 import saleRoutes from './routes/sale.routes';
 import authRoutes from './routes/auth.routes';
 import userRoutes from './routes/user.routes';
+import { setupSwagger } from './config/swagger';
+import config from './config';
 
 // Inicialização do app
 dotenv.config();
 const app = express();
-const PORT = process.env.PORT || 5000;
 
 // Middlewares
 app.use(cors());
@@ -28,7 +29,9 @@ app.use('/api/sales', saleRoutes);
 app.use('/api/auth', authRoutes);
 app.use('/api/users', userRoutes);
 
+
+setupSwagger(app)
 // Iniciar servidor
-app.listen(PORT, () => {
-  console.log(`Servidor rodando na porta ${PORT}`);
+app.listen(config.port, () => {
+  console.log(`Servidor rodando na porta ${config.port}`);
 });
